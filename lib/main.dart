@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -12,7 +13,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String resultado = "EM ESPERA";
+  String resultado = "";
 
   TextEditingController txtcep = TextEditingController();
 
@@ -50,30 +51,54 @@ class _HomeState extends State<Home> {
         title: Text("LocApp CEP"),
         backgroundColor: Colors.blue,
       ),
+      bottomNavigationBar: Stack(
+        children: [
+          new Container(
+            height: 100.0,
+          ),
+          Positioned(
+            left: 20.0,
+            right: 20.0,
+            top: 20.0,
+            bottom: 20.0,
+            child: new RaisedButton(
+                child: Text("Consultar"),
+                onPressed: buscacep,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ),
+                color: Colors.blue),
+          ),
+        ],
+      ),
       body: Container(
         padding: EdgeInsets.all(30),
         child: Center(
           child: Column(
             children: <Widget>[
               TextField(
+                maxLength: 8,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(8),
+                ],
                 controller: txtcep,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   hintText: "05010000",
                   labelText: "CEP",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                    borderSide: BorderSide(
+                      width: 0,
+                      style: BorderStyle.none,
+                    ),
+                  ),
+                  filled: true,
+                  contentPadding: EdgeInsets.all(16),
                 ),
                 style: TextStyle(fontSize: 16),
               ),
-              RaisedButton(
-                color: Colors.white,
-                padding: EdgeInsets.all(10.0),
-                child: Text("Consultar"),
-                onPressed: buscacep,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                    side: BorderSide(color: Colors.blue)
-                ),
-              ),
+              Padding(padding: EdgeInsets.all(85)),
               Text(resultado)
             ],
           ),
